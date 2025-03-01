@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<?php
+// Define the URL of the playlist
+$playlist_url = 'https://raw.githubusercontent.com/Jkix321/VTAK/refs/heads/main/JAPONESE';
+
+// Get the user agent from the request headers
+$user_agent = $_SERVER['HTTP_USER_AGENT'];
+
+// Define the user agent string for OTT Navigator (you may need to adjust this)
+$ott_navigator_user_agent = 'OTT Navigator';
+
+// Check if the user agent is a browser or OTT Navigator
+if (strpos($user_agent, $ott_navigator_user_agent) !== false) {
+    // If the request is from OTT Navigator, fetch and return the playlist data
+    $playlist_data = file_get_contents($playlist_url);
+    header('Content-Type: application/vnd.apple.mpegurl');
+    echo $playlist_data;
+} else {
+    // If the request is from a browser, return a 403 Forbidden response
+    header('HTTP/1.1 403 Forbidden');
+    echo 'Access Forbidden';
+}
+?>
+</body>
+</html>
